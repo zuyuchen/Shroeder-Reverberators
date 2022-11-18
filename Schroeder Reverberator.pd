@@ -1,0 +1,191 @@
+#N canvas 0 45 1280 645 12;
+#X obj 34 62 adc~;
+#X text 110 -80 This is a patch for digital implementation of Schroeder
+Reverberator with the particular configuration developed by John Chowning
+\, called JCREV.;
+#X text 40 360 The allpass filters provide `colorless' high-density
+echoes in the late impulse response of the reverberator. These allpass
+filters may also be referred to as 'diffusers'., f 24;
+#X text 1230 110 A feedback comb filter can simulate a pair of parallel
+walls \, so one could choose the delay-line length in each comb filter
+to be the number of samples it takes for a plane wave to propagate
+from one wall to the opposite wall and back. One may choose the comb-filter
+delay-line lengths more or less arbitrarily \, and then use enough
+of them in parallel (with mutually prime delay-line lengths) to achieve
+a perceptually adequate fluctuation density in the frequency-response
+magnitude., f 33;
+#X obj 730 150 +~;
+#X obj 1070 150 +~;
+#X text 780 60 x1;
+#X text 940 60 x2;
+#X text 1090 60 x3;
+#X text 1230 60 x4;
+#X text 760 150 s1 = x1 + x3;
+#X text 1100 150 s2 = x2 + x4;
+#X obj 730 210 +~;
+#X obj 1000 210 -~, f 4;
+#X obj 40 330 s~ sig;
+#X obj 730 11 r~ sig;
+#X obj 730 300 output~;
+#X obj 1110 300 output~;
+#X obj 840 260 *~ -1;
+#X obj 840 300 output~;
+#X obj 1000 260 *~ -1;
+#X obj 1000 300 output~;
+#X text 730 350 OutA = s1 + s2;
+#X text 840 350 OutB = -OutA;
+#X text 1000 350 OutC = -OutD;
+#X text 1110 350 OutD = s1 - s2;
+#X text 770 210 s1 + s2;
+#X text 1040 210 s1 - s2;
+#X floatatom 930 270 5 0 0 0 - - -, f 5;
+#X text 950 0 stop;
+#X text 150 200 g;
+#X text 180 200 N;
+#X msg 1500 180 347 113 37;
+#X msg 1610 180 1687 1601 2053 2251;
+#X obj 1500 240 sample2ms, f 16;
+#X floatatom 1500 280 5 0 0 0 - - -, f 5;
+#X floatatom 1540 280 5 0 0 0 - - -, f 5;
+#X floatatom 1580 280 5 0 0 0 - - -, f 5;
+#X floatatom 1610 280 5 0 0 0 - - -, f 5;
+#X text 1500 150 pmts: allpass-N;
+#X text 1640 150 pmts: FBCF-N;
+#X text 1760 180 delay in samples;
+#X text 1680 280 delay in milliseconds;
+#X obj 990 -30 loadbang;
+#X obj 300 240 osc~ 440;
+#X text 730 380 When 4 outpus are set at the same level \, the aggregated
+output is equal zero as they cancel out each other with group of two
+(OutA = -OutB \, OutC = 0utD).;
+#X text 730 440 Play around the volume to listen to the particular
+mixing., f 63;
+#X floatatom 350 90 5 0 0 0 - - -, f 5;
+#X obj 300 120 osc~ 440;
+#X obj 300 90 +~ 1;
+#X obj 730 80 FBCF f1 0.773 38.25;
+#X obj 880 80 FBCF f2 0.802 36.3;
+#X obj 1040 80 FBCF f3 0.753 46.55;
+#X obj 1190 80 FBCF f4 0.733 51.04;
+#X text 80 200 del1;
+#X obj 40 220 allpass a1 A1 0.7 7.868;
+#X obj 40 250 allpass a2 A2 0.7 2.562;
+#X obj 40 280 allpass a3 A3 0.7 0.839;
+#X text 110 200 del2;
+#X msg 990 0 \; l 0;
+#X obj 930 220 r l;
+#N canvas 0 22 450 300 (subpatch) 0;
+#X array bark 79645 float 2 black black;
+#X coords 0 1 79645 -1 200 140 1;
+#X restore 480 360 graph;
+#X obj 491 130 *~ 79645;
+#X obj 300 50 hsl 128 15 0 2 0 0 empty empty empty -2 -8 0 20 #fcfcfc
+#000000 #000000 0 1;
+#X obj 490 100 phasor~ 0.5;
+#X obj 490 270 output~;
+#X obj 490 170 tabread~ bark;
+#X msg 570 230 mute;
+#X obj 570 200 loadbang;
+#X text 490 60 Try with a dog bark sound;
+#X obj 300 350 output~;
+#X msg 365 297 mute;
+#X obj 365 267 loadbang;
+#X obj 519 210 r l;
+#X text 300 20 Try with a oscillating sine wave;
+#X text 30 30 Try with incoming microphone signal;
+#X text 1650 240 convert samples to milliseconds;
+#X obj 240 300 s~ sine;
+#X obj 440 230 s~ dog;
+#X obj 100 90 r~ sine;
+#X obj 160 90 r~ dog;
+#X obj 100 150 *~ 1;
+#X obj 160 150 *~ 1;
+#X obj 190 120 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 0.8;
+#X obj 130 120 tgl 16 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 0.8;
+#X obj 40 150 *~ 1;
+#X obj 70 120 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 1 1;
+#X obj 70 60 loadbang;
+#X msg 240 90 0;
+#X msg 70 90 1;
+#X msg 335 298 1;
+#X text 110 -20 Switch one toggle to another to play with different
+input source;
+#X obj 300 160 *~ 200;
+#X obj 300 200 +~ 200;
+#X connect 0 0 85 0;
+#X connect 0 1 85 0;
+#X connect 4 0 12 0;
+#X connect 4 0 13 0;
+#X connect 5 0 12 1;
+#X connect 5 0 13 1;
+#X connect 12 0 16 0;
+#X connect 12 0 18 0;
+#X connect 12 0 16 1;
+#X connect 13 0 17 0;
+#X connect 13 0 20 0;
+#X connect 13 0 17 1;
+#X connect 15 0 50 0;
+#X connect 15 0 51 0;
+#X connect 15 0 52 0;
+#X connect 15 0 53 0;
+#X connect 18 0 19 0;
+#X connect 18 0 19 1;
+#X connect 20 0 21 0;
+#X connect 20 0 21 1;
+#X connect 32 0 34 0;
+#X connect 33 0 34 1;
+#X connect 34 0 35 0;
+#X connect 34 1 36 0;
+#X connect 34 2 37 0;
+#X connect 34 3 38 0;
+#X connect 43 0 59 0;
+#X connect 44 0 70 0;
+#X connect 44 0 70 1;
+#X connect 44 0 77 0;
+#X connect 48 0 49 0;
+#X connect 49 0 92 0;
+#X connect 50 0 4 0;
+#X connect 51 0 5 0;
+#X connect 52 0 4 1;
+#X connect 53 0 5 1;
+#X connect 55 0 56 0;
+#X connect 56 0 57 0;
+#X connect 57 0 14 0;
+#X connect 60 0 28 0;
+#X connect 60 0 16 2;
+#X connect 60 0 19 2;
+#X connect 60 0 21 2;
+#X connect 60 0 17 2;
+#X connect 62 0 66 0;
+#X connect 63 0 48 0;
+#X connect 63 0 47 0;
+#X connect 64 0 62 0;
+#X connect 66 0 65 0;
+#X connect 66 0 65 1;
+#X connect 66 0 78 0;
+#X connect 67 0 65 2;
+#X connect 68 0 67 0;
+#X connect 71 0 70 2;
+#X connect 72 0 71 0;
+#X connect 72 0 70 2;
+#X connect 72 0 90 0;
+#X connect 73 0 65 2;
+#X connect 79 0 81 0;
+#X connect 80 0 82 0;
+#X connect 81 0 55 0;
+#X connect 82 0 55 0;
+#X connect 83 0 82 1;
+#X connect 84 0 81 1;
+#X connect 85 0 55 0;
+#X connect 86 0 85 1;
+#X connect 87 0 88 0;
+#X connect 87 0 89 0;
+#X connect 88 0 83 0;
+#X connect 88 0 84 0;
+#X connect 89 0 86 0;
+#X connect 90 0 70 2;
+#X connect 92 0 93 0;
+#X connect 93 0 44 0;

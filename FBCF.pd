@@ -1,0 +1,19 @@
+#N canvas 345 337 664 562 12;
+#X obj 80 190 inlet~;
+#X obj 80 370 outlet~;
+#X text 60 70 FBCF(g \, N) = 1/(1-g*Z^(-N));
+#X text 60 100 Write it in terms of difference equation:;
+#X text 60 130 y[n] = x[n] + g*y[n-N];
+#X text 60 40 Feedback Comb Filter is defined by the transfer function
+as below:, f 71;
+#X obj 80 320 +~;
+#X obj 170 230 delwrite~ \$1 \$3;
+#X obj 168 255 delread~ \$1 \$3;
+#X obj 170 280 *~ \$2;
+#X text 40 320 x[n];
+#X text 170 320 g*y[n-N];
+#X connect 0 0 6 0;
+#X connect 6 0 1 0;
+#X connect 6 0 7 0;
+#X connect 8 0 9 0;
+#X connect 9 0 6 1;
